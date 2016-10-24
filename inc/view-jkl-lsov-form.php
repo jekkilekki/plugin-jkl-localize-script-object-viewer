@@ -20,7 +20,7 @@ if( isset( $_POST[ 'jkl-lsov-submit' ] ) &&
             <h4><?php _e( 'Localize Script Object Viewer', 'jkl-localize-script-object-viewer' ); ?></h4>
             
             <h5>Input</h5>
-            <textarea name="jkl-lsov-input" id="jkl-lsov-textarea" style="overflow: hidden; font-family: monospace" onkeyup="textAreaAdjust(this)" placeholder="Enter your PHP data or array to transform into JSON with wp_localize_script():"></textarea>
+            <textarea name="jkl-lsov-input" id="jkl-lsov-textarea" onkeyup="textAreaAdjust(this)" placeholder="Enter your PHP data or array to transform into JSON with wp_localize_script():"></textarea>
             <input name="action" type="hidden" value="jkl_lsov">
             
             <div class="controls">
