@@ -100,7 +100,7 @@ if ( ! class_exists( 'JKL_Localize_Script_Object_Viewer' ) ) {
          */
         public function jkl_lsov_scripts_styles() {
                 
-                wp_enqueue_style( 'jkl-lsov-style', plugins_url( '../style.css', __FILE__ ) );
+                wp_enqueue_style( 'jkl-lsov-style', plugins_url( '../css/style.css', __FILE__ ) );
             
         }
         

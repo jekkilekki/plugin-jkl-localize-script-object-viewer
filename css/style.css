@@ -1,7 +1,8 @@
 /**
  *
  */
-#jkl-lsov-form #jkl-lsov-textarea {
-    overflow: hidden; 
+#jkl-lsov-form #jkl-lsov-input {
+    overflow: scroll; 
     font-family: monospace;
+    white-space: nowrap;
 }
