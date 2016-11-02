@@ -123,7 +123,8 @@ if ( ! class_exists( 'JKL_LSOV_Shortcode' ) ) {
             check_ajax_referer( 'jkl_lsov_nonce', 'nonce' );
             
             $string = str_replace( "\'", '"', $_POST[ 'jkl_lsov_data' ] ); // read in as a string, not array nor object
-            
+            //parse_str( $string, $thisArr );
+            // echo "Hello world" . 
             // Replace any instances of escaped single quotes \' with double quotes "
             //$string =  $data );
             
@@ -133,9 +134,9 @@ if ( ! class_exists( 'JKL_LSOV_Shortcode' ) ) {
             // If the first array element is NOT "array("
 //            if( $array[0] == "array(" ) {
                 $obj = $this->jkl_create_arr( $array );
-                var_dump( $obj );
                 $i = 0;
-                foreach( $obj as $array_obj ) {
+                foreach( $thisArr as $array_obj ) {
+                //foreach( $obj as $array_obj ) {
                     echo "[" . $i . "]: " . $array_obj . "<br>";
                     $i++;
                 }
@@ -163,19 +164,57 @@ if ( ! class_exists( 'JKL_LSOV_Shortcode' ) ) {
             
         }
         
-        public function jkl_create_arr( $array ) {
+        /**
+         * Check out this @link http://jsteemann.github.io/blog/2015/06/16/parsing-php-arrays-with-php/
+         */
+        public function jkl_create_arr( $array, $depth = 0 ) {
+            
+            // Find the start of our array
             $index = array_search( 'array(', $array ); // find first index of 'array(' and set that to the index
             $newArr = [];
-            // Loop over the rest of the array to properly reconstruct the original input array
+            
+            // If anything preceeds 'array(', get rid of it
             for( $i = 0; $i < $index; $i++ ) {
                 array_shift( $array );
             }
-            foreach( $array as $obj ) {
-                $newArr[] = $obj;
+            
+            // Loop over the rest of the array to properly reconstruct the original input array
+            for( $i = 0; $i < $array.length; $i++ ) {
+                //$newArr[] = $obj;
+                $tempStr = "";
+                $tempArr = [];
+                
+                // If there's an 'array(', start a new Array variable and populate it 
+                // Recursively call this same function
+                if( 'array(' == $array[ $i ] ) {
+//                    $tempArr = array_reverse( $array );
+//                    $arrEnd = array_search( '),', $tempArr );
+//                    $newArr[] = $this->jkl_create_arr( array_slice( $array, $array[i], $array.length-$arrEnd ), $depth++ );
+//                }
+//                // If there's a value with double quotes " we know it's the key value
+//                elseif( strpos( $array[ $i ], '"' ) != -1 ) {
+//                    if( 'array(' == $array[ $i+1 ] ) {
+//                        $tempArr = array_reverse( $array );
+//                        $arrEnd = array_search( '),', $tempArr );
+//                        $tempArr = $this->jkl_create_arr( array_slice( $array, $array[i], $array.length-$arrEnd ), $depth++ );
+//                    } else {
+//                        $newArr[ "{$array[$i]}" ] = $array[ $i+1 ];
+//                    }
+//                }
+//                // If we find the end of an array, just skip over it (should be properly cared for in the jkl_create_sub_arr() method
+//                elseif( '),' == $array[ $i ] && $depth != 0 ) {
+//                    return $newArr;
+//                }
+//                // All other values must be the values for our keys
+//                else {
+//                    $newArr[] = "Hmm, default value.";
+                }
             }
+            
+            // Error checking
             $newArr[] = $index;
             $newArr[] = $array[ $index ];
-            return $newArr;
+            return $array;
         }
         
     } // END class JKL_LSOV_Shortcode
