@@ -25,7 +25,7 @@ jQuery(document).ready( function( $ ) {
     $( '#jkl-lsov-submit' ).click( function( e ) {
         e.preventDefault();
         console.log( Postdata.test );
-        var Inputdata = jQuery( '#jkl-lsov-input' ).val();
+        var Inputdata = $( '#jkl-lsov-input' ).val();
         $.ajax({
             url:    Postdata.ajax_url,
             type:   'post',
@@ -36,7 +36,7 @@ jQuery(document).ready( function( $ ) {
             },
             success: function( response ) {
                 // alert( Responsedata.result );
-                jQuery( '#jkl-lsov-jsobj' ).html( response );
+                $( '#jkl-lsov-jsobj' ).html( response );
             }
         });
 //        var data = {

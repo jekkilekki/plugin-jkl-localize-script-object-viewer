@@ -122,23 +122,60 @@ if ( ! class_exists( 'JKL_LSOV_Shortcode' ) ) {
             
             check_ajax_referer( 'jkl_lsov_nonce', 'nonce' );
             
-            $data = $_POST[ 'jkl_lsov_data' ];
+            $string = str_replace( "\'", '"', $_POST[ 'jkl_lsov_data' ] ); // read in as a string, not array nor object
             
-            foreach( ( array ) $data as $key => $value ) {
-                if( !is_scalar( $value ) )
-                    continue;
-                $data[ $key ] = html_entity_decode( (string) $value, ENT_QUOTES, 'UTF-8' );
-            }
+            // Replace any instances of escaped single quotes \' with double quotes "
+            //$string =  $data );
+            
+            // split the phrase by any number of commas or space characters,
+            $array = preg_split('/(=\s?)|(\s+=>\s?)|(\s\s+)/', $string );
+            
+            // If the first array element is NOT "array("
+//            if( $array[0] == "array(" ) {
+                $obj = $this->jkl_create_arr( $array );
+                var_dump( $obj );
+                $i = 0;
+                foreach( $obj as $array_obj ) {
+                    echo "[" . $i . "]: " . $array_obj . "<br>";
+                    $i++;
+                }
+//            } else {
+//                echo "Not the right one: " . array_shift( $array ) . "<br>";
+//            }
+            
+            
+            // echo wp_json_encode( str_replace( "\'", '"', $data ) );
+            
+//            foreach( ( array ) $data as $key => $value ) {
+//                if( !is_scalar( $value ) )
+//                    continue;
+//                $data[ $key ] = html_entity_decode( (string) $value, ENT_QUOTES, 'UTF-8' );
+//            }
 //            $script = "var $object_name = " . wp_json_encode( $data ) . ';';
-            $script = wp_json_encode( $data ) . ';';
-            
+            $script = wp_json_encode( array( 'list1' => array( 'item1' => 'value1' ), 'list2' => array( 'item1' => 'value1', 'item2' => 'value2' ) ) ) . ';';
+            //$script = wp_json_encode( $data );
 //            $pos = array_search( 'array', $data );
 //            $data = substr( $data, $pos );
-            echo $script;
+            //echo $script;
             
             // Always die in functions echoing Ajax content
             die();
             
+        }
+        
+        public function jkl_create_arr( $array ) {
+            $index = array_search( 'array(', $array ); // find first index of 'array(' and set that to the index
+            $newArr = [];
+            // Loop over the rest of the array to properly reconstruct the original input array
+            for( $i = 0; $i < $index; $i++ ) {
+                array_shift( $array );
+            }
+            foreach( $array as $obj ) {
+                $newArr[] = $obj;
+            }
+            $newArr[] = $index;
+            $newArr[] = $array[ $index ];
+            return $newArr;
         }
         
     } // END class JKL_LSOV_Shortcode
