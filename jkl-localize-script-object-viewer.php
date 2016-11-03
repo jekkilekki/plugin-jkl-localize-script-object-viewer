@@ -42,8 +42,11 @@
 /* Prevent direct access */
 if ( ! defined( 'WPINC' ) ) die;
 
-require_once plugin_dir_path( __FILE__ ) . 'inc/class-jkl-lsov.php';
-require_once plugin_dir_path( __FILE__ ) . 'inc/class-jkl-lsov-shortcode.php';
+require_once plugin_dir_path( __FILE__ ) . 'inc/class.jkl-lsov.php';
+require_once plugin_dir_path( __FILE__ ) . 'inc/class.jkl-lsov-shortcode.php';
+
+require_once plugin_dir_path( __FILE__ ) . 'inc/class.Tokens.php';
+require_once plugin_dir_path( __FILE__ ) . 'inc/class.TokenParser.php';
 
 function run_lsov() {
     // Instantiate the plugin class

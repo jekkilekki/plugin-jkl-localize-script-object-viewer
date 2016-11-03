@@ -56,7 +56,7 @@ if ( ! class_exists( 'JKL_LSOV_Shortcode' ) ) {
             // Prevent loading more than once per Page
             global $post;
             if( has_shortcode( $post->post_content, 'jkl_lsov' ) ) {
-                include_once 'view-jkl-lsov-form.php';
+                include_once 'view.jkl-lsov-form.php';
             }
             
         }
@@ -122,22 +122,39 @@ if ( ! class_exists( 'JKL_LSOV_Shortcode' ) ) {
             
             check_ajax_referer( 'jkl_lsov_nonce', 'nonce' );
             
-            $string = str_replace( "\'", '"', $_POST[ 'jkl_lsov_data' ] ); // read in as a string, not array nor object
-            //parse_str( $string, $thisArr );
+            //$string = str_replace( "\'", '"', $_POST[ 'jkl_lsov_data' ] ); // read in as a string, not array nor object
+            $input = str_replace( "\'", '"', $_POST[ 'jkl_lsov_data' ] );
+//            
+            $tokens = new JKL_Tokens( $input );
+            //$parser = new JKL_TokenParser( $tokens );
+            //$result = $parser->parseArray();
+//            
+//            // Check if the parser matched the whole string or if there's something left
+//            if( ! $tokens->done() ) {
+//                throw new Exception( "Still tokens left after parsing!" );
+//            }
+//            
+//            echo $result . "<br><br>JSON:<br><br>";
+//            echo json_encode( $result );
+
+            echo $input . "<br><br>Tokens:<br>";
+            
+//parse_str( $string, $thisArr );
             // echo "Hello world" . 
             // Replace any instances of escaped single quotes \' with double quotes "
             //$string =  $data );
             
             // split the phrase by any number of commas or space characters,
-            $array = preg_split('/(=\s?)|(\s+=>\s?)|(\s\s+)/', $string );
-            
-            // If the first array element is NOT "array("
-//            if( $array[0] == "array(" ) {
-                $obj = $this->jkl_create_arr( $array );
+//            $array = preg_split('/(=\s?)|(\s+=>\s?)|(\s\s+)/', $string );
+//            
+//            // If the first array element is NOT "array("
+////            if( $array[0] == "array(" ) {
+//                $obj = $this->jkl_create_arr( $array );
                 $i = 0;
-                foreach( $thisArr as $array_obj ) {
-                //foreach( $obj as $array_obj ) {
-                    echo "[" . $i . "]: " . $array_obj . "<br>";
+//                foreach( $thisArr as $array_obj ) {
+                $tokensArr = $tokens->getTokenArr();
+                foreach( $tokensArr as $token ) {
+                    echo "[" . $i . "]: " . $token . "<br>";
                     $i++;
                 }
 //            } else {
@@ -153,7 +170,7 @@ if ( ! class_exists( 'JKL_LSOV_Shortcode' ) ) {
 //                $data[ $key ] = html_entity_decode( (string) $value, ENT_QUOTES, 'UTF-8' );
 //            }
 //            $script = "var $object_name = " . wp_json_encode( $data ) . ';';
-            $script = wp_json_encode( array( 'list1' => array( 'item1' => 'value1' ), 'list2' => array( 'item1' => 'value1', 'item2' => 'value2' ) ) ) . ';';
+            //$script = wp_json_encode( array( 'list1' => array( 'item1' => 'value1' ), 'list2' => array( 'item1' => 'value1', 'item2' => 'value2' ) ) ) . ';';
             //$script = wp_json_encode( $data );
 //            $pos = array_search( 'array', $data );
 //            $data = substr( $data, $pos );
